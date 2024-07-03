@@ -1,16 +1,28 @@
-# This is a sample Python script.
+import streamlit as st
+from dotenv import load_dotenv
+from PyPDF2 import PdfReader
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+def main():
+    load_dotenv()
+
+    # UI STUFF
+    st.set_page_config(page_title="Ask your pdf")
+    st.header("Ask your PDF")
+    pdf = st.file_uploader("Upload your pdf", type="pdf")
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+
+    if pdf is not None:
+        # Reading the pdf file
+        pdf_reader = PdfReader(pdf)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text()
 
 
-# Press the green button in the gutter to run the script.
+        st.write(text)
+
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
